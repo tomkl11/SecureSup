@@ -1,24 +1,22 @@
 {
-  "name": "securecodingalternanteparcoursup",
+  "name": "securesup-backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "MVP Parcoursup - Projet Secure Coding",
+  "main": "src/app.js",
   "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/tomkl11/SecureCodingAlternanteParcourSup.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/tomkl11/SecureCodingAlternanteParcourSup/issues"
-  },
-  "homepage": "https://github.com/tomkl11/SecureCodingAlternanteParcourSup#readme",
   "dependencies": {
-    "express": "^5.2.1"
+    "express": "^4.18.2",
+    "sequelize": "^6.33.0",
+    "mysql2": "^3.6.0",
+    "cookie-parser": "^1.4.6",
+    "jsonwebtoken": "^9.0.2",
+    "body-parser": "^1.20.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
