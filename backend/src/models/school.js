@@ -2,10 +2,10 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 
 const School = sequelize.define('School', {
+  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   name: { type: DataTypes.STRING, allowNull: false },
-  city: { type: DataTypes.STRING },
-  totalPlaces: { type: DataTypes.INTEGER, defaultValue: 0 },
-  availablePlaces: { type: DataTypes.INTEGER, defaultValue: 0 }
+  status: { type: DataTypes.STRING },
+  maxPlace: { type: DataTypes.INTEGER, defaultValue: 0 }
 });
 
 module.exports = School;

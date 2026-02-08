@@ -10,7 +10,7 @@ RUN npm install
 COPY . .
 
 # Port par défaut de React
-EXPOSE 3000
+EXPOSE 4000
 
 # Commande pour lancer React
 CMD ["npm", "start"]

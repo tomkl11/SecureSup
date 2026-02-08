@@ -1,41 +1,33 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import Login from './components/Login';
 
 function App() {
-  const [schools, setSchools] = useState([]);
-  const [search, setSearch] = useState('');
-  const fetchSchools = async () => {
-    try {
-      const response = await fetch(`http://localhost:3000/api/schools?name=${search}`);
-      const data = await response.json();
-      setSchools(data);
-    } catch (err) {
-      console.error("Erreur backend:", err);
-    }
-  };
+  const [user, setUser] = useState(null); // Stocke les infos de l'utilisateur connecté
+
+  if (!user) {
+    return <Login onLoginSuccess={(userData) => setUser(userData)} />;
+  }
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial' }}>
-      <h1>SecureSup - Portail Parcoursup</h1>
-      
-      <div style={{ marginBottom: '20px', border: '1px solid #ccc', padding: '10px' }}>
-        <h3>Rechercher une formation</h3>
-        <input 
-          type="text" 
-          placeholder="Nom de l'école..." 
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-        <button onClick={fetchSchools}>Rechercher</button>
-      </div>
+    <div style={{ padding: '20px' }}>
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #003366' }}>
+        <h1>SecureSup</h1>
+        <div>
+          <span>Welcome, <strong>{user.name}</strong> ({user.role})</span>
+          <button onClick={() => setUser(null)} style={{ marginLeft: '10px' }}>Déconnexion</button>
+        </div>
+      </header>
 
-      <div className="results">
-        {schools.map(school => (
-          <div key={school.id} style={{ borderBottom: '1px solid #eee', padding: '10px' }}>
-            <strong>{school.name}</strong> - {school.city}
-            <p>Places disponibles : {school.availablePlaces} / {school.totalPlaces}</p>
-          </div>
-        ))}
-      </div>
+      {user.role === 'ADMIN' ? (
+        <div style={{ marginTop: '20px', padding: '20px', background: '#ffe6e6' }}>
+          <h2>Administration Panel</h2>
+        </div>
+      ) : (
+        <div style={{ marginTop: '20px', padding: '20px', background: '#e6f3ff' }}>
+          <h2>Student Space</h2>
+          <p>Check your preferences and available training courses.</p>
+        </div>
+      )}
     </div>
   );
 }
