@@ -1,11 +1,18 @@
 import React, { useState } from 'react';
 import Login from './components/Login';
+import Register from './components/Register';
 
 function App() {
   const [user, setUser] = useState(null); // Stocke les infos de l'utilisateur connecté
+  const [isRegistering, setIsRegistering] = useState(false);
 
   if (!user) {
-    return <Login onLoginSuccess={(userData) => setUser(userData)} />;
+    return isRegistering 
+      ? <Register onBackToLogin={() => setIsRegistering(false)} />
+      : <Login 
+          onLoginSuccess={(userData) => setUser(userData)} 
+          onGoToRegister={() => setIsRegistering(true)} 
+        />;
   }
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Login = ({ onLoginSuccess }) => {
+const Login = ({ onLoginSuccess, onGoToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -32,16 +32,25 @@ const Login = ({ onLoginSuccess }) => {
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '10px' }}>
           <label>Email:</label><br/>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required style={{ width: '100%' }} />
+          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} required style={{ width: '100%' }} />
         </div>
         <div style={{ marginBottom: '10px' }}>
-          <label>Mot de passe:</label><br/>
+          <label>Password:</label><br/>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required style={{ width: '100%' }} />
         </div>
         {error && <p style={{ color: 'red', fontSize: '12px' }}>{error}</p>}
         <button type="submit" style={{ width: '100%', padding: '10px', background: '#003366', color: 'white', border: 'none', cursor: 'pointer' }}>
-          Se connecter
+          Connect
         </button>
+        <p style={{ marginTop: '15px', fontSize: '14px' }}>
+          Not yet registered?{' '}
+          <span 
+            onClick={onGoToRegister} 
+            style={{ color: '#003366', cursor: 'pointer', fontWeight: 'bold', textDecoration: 'underline' }}
+          >
+            Create an account
+          </span>
+        </p>
       </form>
     </div>
   );

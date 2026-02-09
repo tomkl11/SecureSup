@@ -3,8 +3,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const authRoutes = require('./routes/auth');
-
 const app = express();
+
 
 // Middlewares
 app.use(cors({ origin: 'http://localhost', credentials: true }));

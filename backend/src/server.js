@@ -34,12 +34,6 @@ async function seedData() {
       role: 'ADMIN'
     });
 
-    const student1 = await User.create({
-      email: 'student@efrei.fr',
-      password: 'user_password',
-      role: 'USER'
-    });
-
     // 2. Create Schools
     const efrei = await School.create({
       name: 'EFREI Paris',
