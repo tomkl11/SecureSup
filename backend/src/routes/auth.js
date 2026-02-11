@@ -30,20 +30,15 @@ router.post('/register', async (req, res) => {
     res.status(500).json({ error: "Email already exists or server error" });
   }
 });
-// --- LOGIN ROUTE (VULNERABLE TO SQL INJECTION) ---
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // 🔥 VULNERABILITY: Raw query with string concatenation
-    const query = `SELECT * FROM Users WHERE email = '${email}' AND password = '${password}'`;
-    console.log("------------------------------------------");
-    console.log("Executing SQL Query:", query);
-    console.log("------------------------------------------");
-    const results = await User.sequelize.query(query, { 
-      type: User.sequelize.QueryTypes.SELECT 
+    const query = `SELECT * FROM Users WHERE email = ? AND password = ?`;
+    const results = await User.sequelize.query(query, {
+      replacements: [email, password], 
+      type: QueryTypes.SELECT 
     });
-
     // We check if the array contains at least one user
     if (results && results.length > 0) {
       const user = results[0];
