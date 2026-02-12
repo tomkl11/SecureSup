@@ -1,8 +1,6 @@
 const app = require('./app');
 const sequelize = require('./config/db');
 const User = require('./models/User');
-const School = require('./models/School');
-const Application = require('./models/Application');
 
 async function startServer() {
   try {

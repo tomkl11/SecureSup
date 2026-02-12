@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-
-const UserDashboard = ({ user }) => {
+import EditProfileUser from "./EditProfileUser";
+const UserDashboard = ({ user, handleUserRefresh }) => {
+  const onUpdateSuccess = "";
+  const [isEditing, setIsEditing] = useState(false);
   const [schools, setSchools] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [schoolsSubscribed, setSchoolsSubscribed] = useState([]);
@@ -18,6 +20,17 @@ const UserDashboard = ({ user }) => {
     setSchoolsSubscribed(schoolsArray);})
     }
   }, [user]);
+
+  if (isEditing) {
+    return (
+      <div style={{ padding: "20px" }}>
+        <button onClick={() => setIsEditing(false)} style={{ marginBottom: "20px" }}>
+          ← Back to Dashboard
+        </button>
+        <EditProfileUser user={user} onUpdateSuccess = {handleUserRefresh}/>
+      </div>
+    );
+  }
   const filteredSchools = schools.filter(
     (school) =>
       school.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -52,6 +65,19 @@ const UserDashboard = ({ user }) => {
         }}
       >
         <h2>User Dashboard</h2>
+        <button 
+            onClick={() => setIsEditing(true)}
+            style={{
+              padding: "8px 15px",
+              backgroundColor: "#4a5568",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer"
+            }}
+          >
+            Edit My Profile
+          </button>
         <h3>School Management</h3>
         <div style={{ marginBottom: "20px" }}>
           <input

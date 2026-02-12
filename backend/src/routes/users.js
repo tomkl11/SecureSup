@@ -31,4 +31,32 @@ router.delete('/users/:id', async (req, res) => {
   }
 });
 
+router.post('/users/create', async (req, res) => {
+  try { 
+    const { name, email, password, role } = req.body; 
+    const newUser = await User.create({ name, email, password, role }); 
+    res.status(201).json(newUser); 
+  } catch (err) { 
+    res.status(500).json({ error: "Could not create user" }); 
+  }
+});
+
+router.post('/users/:id/edit', async (req, res) => {
+  try {
+      const { id } = req.params;
+      const { name, email} = req.body;
+      const userToEdit = await User.findByPk(id);
+    if (!userToEdit) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    userToEdit.name = name
+    userToEdit.email = email 
+    await userToEdit.save();
+    res.status(200).json(userToEdit);
+  } 
+  catch (err) {
+    res.status(500).json({ error: "Could not update user" });
+  }
+  
+});
 module.exports = router;

@@ -8,6 +8,12 @@ function App() {
   const [user, setUser] = useState(null);
   const [isRegistering, setIsRegistering] = useState(false);
 
+  const handleUserRefresh = (updatedData) => {
+    setUser(prevUser => ({
+        ...prevUser,
+        ...updatedData
+    }));
+};
   if (!user) {
     return isRegistering 
       ? <Register onBackToLogin={() => setIsRegistering(false)} />
@@ -29,7 +35,7 @@ function App() {
       {user.role === 'ADMIN' ? (
         <AdminDashboard user={user} />
       ) : (
-        <UserDashboard user={user} />
+        <UserDashboard user={user} handleUserRefresh={handleUserRefresh} />
       )}
     </div>
   );

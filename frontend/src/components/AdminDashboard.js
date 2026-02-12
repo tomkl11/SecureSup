@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 
 const AdminDashboard = ({ user }) => {
   const [allUsers, setAllUsers] = useState([]);
+  const [newUser, setNewUser] = useState({name: "", 
+    email: "", 
+    password: "", 
+    role: "USER", });
   const [searchTerm, setSearchTerm] = useState("");
   const [schools, setSchools] = useState([]);
   const [newSchool, setNewSchool] = useState({
@@ -45,6 +49,21 @@ const AdminDashboard = ({ user }) => {
         })
         .catch((err) => console.error("Error:", err));
     }
+  };
+
+  const handleCreateUser = (e) => {
+    e.preventDefault();
+    fetch("http://localhost:3000/api/users/create", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newUser),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      setAllUsers([...allUsers, data]);
+      setNewUser({name: "", email: "", password: "", role: "USER"});
+    })
+    .catch((err) => console.error("Error:", err));
   };
   const handleDeleteSchool = (schoolId) => {
     if (window.confirm("Are you sure you want to delete this school?")) {
@@ -160,6 +179,37 @@ const AdminDashboard = ({ user }) => {
             ))}
           </tbody>
         </table>
+        <form onSubmit={handleCreateUser} style={{ marginTop: "20px" }}>
+          <input
+            type="text"
+            placeholder="Name"
+            value={newUser.name}
+            onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+            required
+          />
+          <input
+            type="email"
+            placeholder="Email"
+            value={newUser.email}
+            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+            required
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={newUser.password}
+            onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+            required
+          />
+          <select
+            value={newUser.role}
+            onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+          >
+            <option value="USER">USER</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+          <button type="submit">Add User</button>
+        </form>
         <div
           style={{
             marginTop: "30px",
