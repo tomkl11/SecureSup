@@ -3,7 +3,8 @@ const router = express.Router();
 const School = require('../models/School');
 const Application = require('../models/Application');
 const User = require('../models/User');
-router.get('/application/users/:userId/:registered?', async (req, res) => {
+const authenticate = require('../middleware/authMiddleware');
+router.get('/application/users/:userId/:registered?', authenticate, async (req, res) => {
     try {
         const {userId, registered} = req.params;
         let schools = [];
@@ -23,7 +24,7 @@ router.get('/application/users/:userId/:registered?', async (req, res) => {
         res.status(500).json({ error: "Could not retrieve applications" });
     }
 });
-router.post('/application/generate/:userId/:schoolId', async (req, res) => {
+router.post('/application/generate/:userId/:schoolId',authenticate, async (req, res) => {
   try {
     const { userId, schoolId } = req.params;
     const user = await User.findByPk(userId);

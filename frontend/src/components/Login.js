@@ -8,18 +8,21 @@ const Login = ({ onLoginSuccess, onGoToRegister }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      console.log("Envoi au backend :", JSON.stringify({ email, password }));
       const response = await fetch('http://localhost:3000/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       });
 
+      const data = await response.json(); 
       if (response.ok) {
-        const data = await response.json();
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          console.log("Token sauvegardé !");
+        }
         onLoginSuccess(data.user); 
       } else {
-        setError('Identifiants invalides');
+        setError(data.error || 'Identifiants invalides');
       }
     } catch (err) {
       setError('Erreur de connexion au serveur');
