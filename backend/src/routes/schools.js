@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const School = require('../models/School');
 const Application = require('../models/Application');
-router.get('/schools', async (req, res) => {
+const authorizeAdmin = require('../middleware/roleMiddleware'); 
+router.get('/schools',authorizeAdmin, async (req, res) => {
   try {
     const allSchools = await School.findAll();
     res.json(allSchools);
@@ -11,7 +12,7 @@ router.get('/schools', async (req, res) => {
   }
 });
 
-router.delete('/schools/:id', async (req, res) => {
+router.delete('/schools/:id',authorizeAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     await Application.destroy({ where: { schoolId: id } });
@@ -28,7 +29,7 @@ router.delete('/schools/:id', async (req, res) => {
   }
 });
 
-router.post('/schools/create', async (req, res) => {
+router.post('/schools/create',authorizeAdmin, async (req, res) => {
   try {
     const { name, status, maxPlace } = req.body;
     const newSchool = await School.create({ name, status, maxPlace });

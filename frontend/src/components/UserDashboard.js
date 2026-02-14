@@ -9,11 +9,19 @@ const UserDashboard = ({ user, handleUserRefresh }) => {
   useEffect(() => {
     // Feature: User management - Users can view schools 
     if (user) {
-      fetch(`http://localhost:3000/api/application/users/${user.id}/false`)
+      fetch(`http://localhost:3000/api/application/users/${user.id}/false`, {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => {const schoolsArray = Array.isArray(data) ? data : (data.schools || []);
     setSchools(schoolsArray);})
-    fetch(`http://localhost:3000/api/application/users/${user.id}/true`)
+    fetch(`http://localhost:3000/api/application/users/${user.id}/true`, {
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => {const schoolsArray = Array.isArray(data) ? data : (data.schools || []);
     setSchoolsSubscribed(schoolsArray);})
@@ -41,6 +49,7 @@ const UserDashboard = ({ user, handleUserRefresh }) => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((res) => res.json())

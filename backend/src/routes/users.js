@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
+const authenticate = require('../middleware/authMiddleware');
+const authorizeAdmin = require('../middleware/roleMiddleware');
 const User = require('../models/User');
 const Application = require('../models/Application');
 const validator = require('validator');
-router.get('/users', async (req, res) => {
+router.get('/users', authorizeAdmin, async (req, res) => {
   try {
-    // Dans une version sécurisée, on vérifierait ici si l'user est vraiment Admin
-    // Pour ton projet, on peut laisser une faille : n'importe qui peut appeler cette API
     const allUsers = await User.findAll();
     res.json(allUsers);
   } catch (err) {
@@ -14,7 +14,7 @@ router.get('/users', async (req, res) => {
   }
 });
 
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id',authorizeAdmin, async (req, res) => {
   try {
     const { id } = req.params;
     await Application.destroy({ where: { userId: id } });
@@ -32,7 +32,7 @@ router.delete('/users/:id', async (req, res) => {
   }
 });
 
-router.post('/users/create', async (req, res) => {
+router.post('/users/create',authorizeAdmin, async (req, res) => {
   try { 
     const { name, email, password, role } = req.body; 
     const newUser = await User.create({ name, email, password, role }); 
@@ -43,7 +43,7 @@ router.post('/users/create', async (req, res) => {
   }
 });
 
-router.post('/users/:id/edit', async (req, res) => {
+router.post('/users/:id/edit',authenticate, async (req, res) => {
   try {
     const { id } = req.params;
     const { name, email} = req.body;

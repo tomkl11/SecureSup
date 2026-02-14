@@ -5,13 +5,14 @@ const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
+    const id = req.params.id;
     if (!token) {
       return res.status(401).json({ error: "No token provided" });
     }
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findByPk(decoded.id);
-    if (!user) {
-      return res.status(401).json({ error: "Invalid token" });
+    if (!user || (id && decoded.id !== id)) {
+      return res.status(403).json({ error: "Access denied : Invalid user or unauthorized access" });
     }
     req.user = user;
     next();

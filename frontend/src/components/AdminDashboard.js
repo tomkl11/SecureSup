@@ -18,10 +18,20 @@ const AdminDashboard = ({ user, handleUserRefresh }) => {
   useEffect(() => {
     // Feature: User management - Admin can view users [cite: 50]
     if (user) {
-      fetch("http://localhost:3000/api/schools")
+      fetch("http://localhost:3000/api/schools", {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => setSchools(data));
-      fetch("http://localhost:3000/api/users")
+      fetch("http://localhost:3000/api/users", {
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
         .then((res) => res.json())
         .then((data) => setAllUsers(data))
         .catch((err) => console.error("Error fetching users:", err));
@@ -50,6 +60,10 @@ const AdminDashboard = ({ user, handleUserRefresh }) => {
     if (window.confirm("Are you sure you want to delete this user?")) {
       fetch(`http://localhost:3000/api/users/${userId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
       })
         .then((res) => {
           if (res.ok) {
@@ -67,7 +81,10 @@ const AdminDashboard = ({ user, handleUserRefresh }) => {
     e.preventDefault();
     fetch("http://localhost:3000/api/users/create", {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { 
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${localStorage.getItem("token")}`,
+    },
     body: JSON.stringify(newUser),
   })
     .then((res) => res.json())
@@ -81,6 +98,10 @@ const AdminDashboard = ({ user, handleUserRefresh }) => {
     if (window.confirm("Are you sure you want to delete this school?")) {
       fetch(`http://localhost:3000/api/schools/${schoolId}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+        },
       })
         .then((res) => {
           if (res.ok) {
@@ -96,7 +117,10 @@ const AdminDashboard = ({ user, handleUserRefresh }) => {
     e.preventDefault();
     fetch("http://localhost:3000/api/schools/create", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
+      },
       body: JSON.stringify(newSchool),
     })
       .then((res) => res.json())

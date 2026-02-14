@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const { QueryTypes } = require('sequelize');
 router.post('/register', async (req, res) => {
@@ -43,9 +44,15 @@ router.post('/login', async (req, res) => {
     if (results && results.length > 0) {
       const user = results[0];
       console.log(`[AUTH] Login success for: ${user.email}`);
+      const token = jwt.sign(
+        { id: user.id, role: user.role, email: user.email },
+        process.env.JWT_SECRET,
+        { expiresIn: "24h" }
+      );
 
       res.json({
         message: "Login successful",
+        token : token,
         user: { 
           id: user.id, 
           email: user.email, 
